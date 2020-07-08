@@ -55,6 +55,6 @@ ENV GN_ARGS=' \
 ENV RUSTFLAGS="-C target-feature=-crt-static"
 
 WORKDIR /deno_mongo
-COPY . .
+COPY ./deno_mongo .
 
 RUN cargo build --release --locked --all-targets
