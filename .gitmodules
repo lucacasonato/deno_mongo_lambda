@@ -1,0 +1,3 @@
+[submodule "deno_mongo"]
+	path = deno_mongo
+	url = https://github.com/manyuanrong/deno_mongo
