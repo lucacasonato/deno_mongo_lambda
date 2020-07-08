@@ -39,6 +39,7 @@ jobs:
       - name: Build
         run: |
           docker build -t deno-mongodb-lambda -f ./Dockerfile .
+          rm -rf ./target
           docker create --name extract deno-mongodb-lambda
           docker cp extract:/deno_mongo/target/ ./target
 
