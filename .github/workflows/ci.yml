@@ -1,0 +1,56 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        os: [ubuntu-16.04]
+
+    steps:
+      - name: Setup Environment
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+          echo ::set-env name=GH_ACTIONS::1
+
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |-
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/*/.*
+            target/*/build
+            target/*/deps
+          key: ${{ matrix.os }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ matrix.os }}-
+
+      - name: Build
+        run: |
+          docker build -t deno-mongodb-lambda -f ./.github/Dockerfile .
+          docker create --name extract deno-mongodb-lambda
+          docker cp extract:/deno_mongo/target/ ./target
+
+      # Upload artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: libdeno_mongo.so
+          path: target/release/libdeno_mongo.so
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            target/release/libdeno_mongo.so
