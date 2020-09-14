@@ -4,7 +4,7 @@ manyuanrong/deno_mongo, but compiled for AWS Lambda
 
 ## How to use
 
-Just like [deno_mongo](https://github.com/manyuanrong/deno_mongo), but import from `https://raw.githubusercontent.com/lucacasonato/deno_mongo_lambda/v0.10.0/mod.ts` instead of `https://deno.land/x/mongo@v0.10.0/mod.ts`.
+Just like [deno_mongo](https://github.com/manyuanrong/deno_mongo), but import from `https://raw.githubusercontent.com/lucacasonato/deno_mongo_lambda/v0.12.1/mod.ts` instead of `https://deno.land/x/mongo@v0.12.1/mod.ts`.
 
 ## Thanks
 

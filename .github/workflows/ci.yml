@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        os: [ubuntu-16.04]
+        os: [ubuntu-latest]
 
     steps:
       - name: Setup Environment
@@ -26,15 +26,12 @@ jobs:
       - name: Cache
         uses: actions/cache@v2
         with:
-          path: |-
+          path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target/*/.*
-            target/*/build
-            target/*/deps
-          key: ${{ matrix.os }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: |
-            ${{ matrix.os }}-
+            target/
+          key: ${{ runner.os }}-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-
 
       - name: Build
         run: |
